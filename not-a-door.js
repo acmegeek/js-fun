@@ -1,1 +1,1 @@
-(ǀ='this',ǃǀ=Function((ǃǀ=ǀ,'return '+ǀ))())
+(ǀ='this',ǃǀ=Function((ǃǀ=ǀ,'return '+ǃǀ))())
