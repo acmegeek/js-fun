@@ -1,0 +1,123 @@
+<html ng-app="powerballApp">
+<head>
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/css/bootstrap-combined.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<style>
+	.done-true {
+	  text-decoration: line-through;
+	  color: grey;
+	}
+	.checker {
+		max-width: 75%;
+		margin: 0 auto;
+	}
+	</style>
+</head>
+<body>
+<div class="checker">
+  <h2>PowerBall Tester</h2>
+  <div ng-controller="PowerballController as checker">
+    <form ng-submit="checker.checkPlays()">
+      White: <input type="text" ng-model="checker.white"><br>
+      Powerball: <input type="text" ng-model="checker.power"><br>
+      Plays: <textarea ng-model="checker.plays"></textarea><br>
+      <input class="btn-primary" type="submit" value="Check Plays">
+    </form>
+    <hr>
+    <h1 ng-if="checker.prize > 0">You won ${{checker.prize}}!</h1>
+    <h2>Winning numbers: {{checker.white}} PB:{{checker.power}}</h2>
+    <table border=1 cellpadding=5>
+	    <tr>
+	    	<th>Play#</th>
+	    	<th>White Played</th>
+	    	<th>PowerBall Played</th>
+	    	<th>White Matches</th>
+	    	<th>PowerBall Match</th>
+	    	<th>Prize Won</th>
+		</tr>
+	    <tr ng-repeat="(i, play) in checker.playsArray" ng-if="play.whiteMatches > 0 || play.powerMatch">
+	    	<td>{{i}}</td>
+	    	<td>{{play.balls}}</td>
+	    	<td>{{play.power}}</td>
+	    	<td>{{play.whiteMatches}}</td>
+	    	<td>{{play.powerMatch}}</td>
+	    	<td>{{play.prize}}</td>
+		</tr>
+    </table>
+  </div>
+</div>
+
+<script>
+angular
+	.module('powerballApp', [])
+	.controller('PowerballController', PowerballController);
+
+function PowerballController() {
+	var vm = this;
+	vm.plays = '';
+	vm.white = '8 27 34 4 19';
+	vm.power = '10';
+	vm.checkPlays = checkPlays;
+	vm.calcPrize = calcPrize;
+	vm.ballsArray = [];
+	vm.playsArray = [];
+	vm.prize = 0;
+	function parseBalls(balls) {
+		return balls.split(' ').sort(function(a, b){return a-b;}).map(function(num) {return +num;});
+	}
+
+	function calcPrize(wm, pb) {
+		var prize = 0;
+		if (wm == 5 && pb) {
+			prize = 999999999999999;
+		} else if (wm == 5) {
+			prize = 100000;
+		} else if (wm == 4 && pb) {
+			prize = 50000;
+		} else if (wm == 4) {
+			prize = 100;
+		} else if (wm == 3 && pb) {
+			prize = 100;
+		} else if (wm == 3) {
+			prize = 7;
+		} else if (wm == 2 && pb) {
+			prize = 7;
+		} else if (wm == 1 && pb) {
+			prize = 4;
+		} else if (pb) {
+			prize = 4;
+		}
+		if (prize > 0) {
+			console.log(arguments, prize);
+		}
+		vm.prize += prize;
+		return prize;
+	}
+	function checkPlays() {
+		vm.ballsArray = parseBalls(vm.white);
+		vm.playsArray = vm.plays.replace("\r", '').split("\n").map(function(play) {
+			var i, j;
+			var whiteMatches = 0;
+			play = play.split(' ');
+			var power = +play.pop();
+			var powerMatch = (vm.power == power);
+			play = parseBalls(play.join(' '));
+			for (i = 0, j = vm.ballsArray.length; i < j; ++i) {
+				if (play.indexOf(vm.ballsArray[i]) > -1) {
+					++whiteMatches;
+				}
+			}
+			return {
+				power: power,
+				balls: play,
+				whiteMatches: whiteMatches,
+				powerMatch: powerMatch,
+				prize: calcPrize(whiteMatches, powerMatch)
+			};
+		});
+
+	}
+}
+</script>
+</body>
+</html>
