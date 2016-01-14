@@ -11,6 +11,9 @@
 		max-width: 75%;
 		margin: 0 auto;
 	}
+	.winner {
+		background-color: #DFD;
+	}
 	</style>
 </head>
 <body>
@@ -18,9 +21,12 @@
   <h2>PowerBall Tester</h2>
   <div ng-controller="PowerballController as checker">
     <form ng-submit="checker.checkPlays()">
-      White: <input type="text" ng-model="checker.white"><br>
-      Powerball: <input type="text" ng-model="checker.power"><br>
-      Plays: <textarea ng-model="checker.plays"></textarea><br>
+      Winning White Balls: (space between the 5 numbers)<br>
+      <input type="text" ng-model="checker.white"><br>
+      Winning Powerball:<br>
+      <input type="text" ng-model="checker.power"><br>
+      Plays: (enter one play per line, space between numbers and powerball last, like this: 10 14 28 50 65 23)<br>
+      <textarea ng-model="checker.plays"></textarea><br>
       <input class="btn-primary" type="submit" value="Check Plays">
     </form>
     <hr>
@@ -35,7 +41,7 @@
 	    	<th>PowerBall Match</th>
 	    	<th>Prize Won</th>
 		</tr>
-	    <tr ng-repeat="(i, play) in checker.playsArray" ng-if="play.whiteMatches > 0 || play.powerMatch">
+	    <tr ng-repeat="(i, play) in checker.playsArray" ng-if="play.whiteMatches > 0 || play.powerMatch" ng-class="{winner: play.prize > 0}">
 	    	<td>{{i}}</td>
 	    	<td>{{play.balls}}</td>
 	    	<td>{{play.power}}</td>
