@@ -14,6 +14,9 @@
 	.winner {
 		background-color: #DFD;
 	}
+	.nothing {
+		color: #ccc;
+	}
 	</style>
 </head>
 <body>
@@ -41,7 +44,7 @@
 	    	<th>PowerBall Match</th>
 	    	<th>Prize Won</th>
 		</tr>
-	    <tr ng-repeat="(i, play) in checker.playsArray" ng-class="{winner: play.prize > 0}">
+	    <tr ng-repeat="(i, play) in checker.playsArray" ng-class="{nothing: (play.whiteMatches == 0 && !play.powerMatch), winner: play.prize > 0}">
 	    	<td>{{i}}</td>
 	    	<td>{{play.balls}}</td>
 	    	<td>{{play.power}}</td>
