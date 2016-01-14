@@ -41,7 +41,7 @@
 	    	<th>PowerBall Match</th>
 	    	<th>Prize Won</th>
 		</tr>
-	    <tr ng-repeat="(i, play) in checker.playsArray" ng-if="play.whiteMatches > 0 || play.powerMatch" ng-class="{winner: play.prize > 0}">
+	    <tr ng-repeat="(i, play) in checker.playsArray" ng-class="{winner: play.prize > 0}">
 	    	<td>{{i}}</td>
 	    	<td>{{play.balls}}</td>
 	    	<td>{{play.power}}</td>
