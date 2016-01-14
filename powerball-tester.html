@@ -77,7 +77,7 @@ function PowerballController() {
 		if (wm == 5 && pb) {
 			prize = 999999999999999;
 		} else if (wm == 5) {
-			prize = 100000;
+			prize = 1000000;
 		} else if (wm == 4 && pb) {
 			prize = 50000;
 		} else if (wm == 4) {
@@ -100,6 +100,7 @@ function PowerballController() {
 		return prize;
 	}
 	function checkPlays() {
+		vm.prize = 0;
 		vm.ballsArray = parseBalls(vm.white);
 		vm.playsArray = vm.plays.replace("\r", '').split("\n").map(function(play) {
 			var i, j;
