@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+</head>
+<body>
+	<script>
+	function find_consecutive_runs(integer_list) {
+		var runs = [];
+		var n1, n2;
+		integer_list.forEach(function(n, i, a) {
+			// Test will shortcircuit and skip to next array item
+			if (Number.isInteger(n) && Number.isInteger(n1 = a[i + 1]) && Number.isInteger(n2 = a[i + 2]) && // Make sure all 3 items are integers, and set the variables for n+1 and n+2
+				((n2 > n1 && n1 > n) || (n2 < n1 && n1 < n)) && // Ensure that the 3 are a ascending or descending series 
+				Math.abs(n2 - n) == 2 && Math.abs(n1 - n) == 1) { // Test for the increase or decrease by 1 run criteria
+				runs.push(i); // if all conditions met, add run start index to array
+			}
+		});
+		return runs.length ? runs : 'None'; // return runs found or None
+	}
+	console.log('test Example');
+	console.log(find_consecutive_runs([1, 2, 3, 5, 10, 9, 8, 9, 10, 11, 7, 8, 7]));
+
+	console.log('test Example with changed integer');
+	console.log(find_consecutive_runs([1, 2, 3, 5, 10, 11, 8, 9, 10, 11, 7, 8, 7]));
+
+	console.log('test Example with decimal');
+	console.log(find_consecutive_runs([1, 2, 3, 5, 10.5, 9, 8, 9, 10, 11, 7, 8, 7]));
+
+	console.log('test Example with strings');
+	console.log(find_consecutive_runs([1, '2', 3, 5, '10', 9, 8, 9, 10, '11', 7, 8, 7]));
+
+	console.log('test Example with object');
+	console.log(find_consecutive_runs([1, 2, 3, 5, {'foo': 5}, 9, 8, 9, 10, 11, 7, 8, 7]));
+
+	console.log('test repeated');
+	console.log(find_consecutive_runs([1, 1, 1, 1, 1, 1, 2, 3, 2, 1]));
+
+	console.log('test negative numbers');
+	console.log(find_consecutive_runs([-1, -2, -3, -2, -1, 0, 1, 2]));
+
+	console.log('test no matches');
+	console.log(find_consecutive_runs([7, 3, 56, 74, 3, 1, 1]));
+
+	console.log('test long run');
+	console.log(find_consecutive_runs([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]));
+
+	console.log('test with larger and more random numbers');
+	console.log(find_consecutive_runs([34, 35, 36, 6, 423, 4, 45, 5, 5, 6455, 456, 3, 456, 457, 458, 876543, 876542, 876541, 11, 7, 8, 6, 2345624562456245, 2345624562456246, 2345624562456247]));
+	</script>
+</body>
+</html>
