@@ -1,0 +1,140 @@
+<hr size=1>&nbsp;<p>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>Untitled</title>
+
+<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">
+<!--
+
+function DefineKey() {
+	keyText = "qwertyuiopasdfghjklzxcvbnm1234567890MNBVCXZLKJHGFDSAPOIUYTREWQ~`";
+	keyText = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~`";
+	keyAry = new Array();
+	for (q=0;q<=keyText.length-1;++q) {
+		keyAry[q] = keyText.charAt(q);
+	}
+}
+
+function ParseText(inputText) {
+	outputBit = "";
+	for (k=0;k<=inputText.length-1;++k) {
+		textChar = inputText.charCodeAt(k);
+		text = ParseToBit(textChar);
+		(text.length < 2)?(outputBit += "0" + text):(outputBit += text)
+	}
+	return outputBit;
+}
+
+function Parse64(inputBit) {
+	outputText = "";
+	for (k=0;k<=inputBit.length-1;++k) {
+		snip = inputBit.substring(k,k+2);
+		snip = ParseFromBit(snip);
+		if (snip >= 255) {alert(snip);}
+		textChar = String.fromCharCode(snip);
+		outputText += textChar;
+		++k;
+	}
+	return outputText;
+}
+
+
+function ParseToBit(input) {
+	DefineKey();
+	output = "";
+	if (input <= keyText.length-1) {
+		output = keyAry[input];
+	} else {
+		i=1;
+		while (i>0) {
+			newNum = input/keyText.length;
+			numStr = newNum.toString();
+			dotLoc = numStr.indexOf(".");
+			if (dotLoc != -1) {
+				numInt = numStr.substring(0,dotLoc);
+				numDec = numStr.substring(dotLoc);
+			} else {
+				numInt = newNum;
+				numDec = 0;
+			}
+			newBit = numDec*keyText.length;
+			input = numInt;
+			output = keyAry[newBit] + output;
+			if (input >= keyText.length-1) {
+				i=1;
+			} else {
+				output = keyAry[numInt] + output;
+				i=0;
+			}
+		}
+	}
+	return output;
+}
+
+function ParseFromBit(input) {
+	DefineKey();
+	output = 0;
+	firstinput = input.charAt(0);
+	secondinput = input.charAt(1);
+	for (m=0;m<=keyAry.length-1;++m) {
+		if (firstinput == keyAry[m]) {
+			output = (output + m*64)*1;
+		}
+	}
+	for (m=0;m<=keyAry.length-1;++m) {
+		if (secondinput == keyAry[m]) {
+			output = (output + m*1)*1;
+		}
+	}
+	return output;
+}
+
+//-->
+</SCRIPT>
+
+</head>
+
+<body>
+
+Convert a positive number to 64 bit.
+<form name="convert">
+
+	<input type="text" name="decimal" size="100"><br>
+	<input type="text" name="result" size="100"><br>
+	<input type="submit" onClick="document.forms.convert.result.value = ParseToBit(document.forms.convert.decimal.value); return false" value="calc">
+
+</form>
+
+Convert a 64 bit to positive number.
+<form name="convertback">
+
+	<input type="text" name="bit64" size="100"><br>
+	<input type="text" name="result" size="100"><br>
+	<input type="submit" onClick="document.forms.convertback.result.value = ParseFromBit(document.forms.convertback.bit64.value); return false" value="calc">
+
+</form>
+
+Encode a string of text into 64 bit ASCII.
+<form name="encrypt">
+
+	<textarea cols="80" rows="4" name="text"></textarea>
+	<textarea cols="80" rows="4" name="text64"></textarea>
+	<input type="submit" onClick="document.forms.encrypt.text64.value = ParseText(document.forms.encrypt.text.value); return false" value="calc">
+
+</form>
+
+Encode a 64 Bit ASCII back into text.
+<form name="decrypt">
+
+	<textarea cols="80" rows="4" name="text64"></textarea>
+	<textarea cols="80" rows="4" name="text"></textarea>
+	<input type="submit" onClick="document.forms.decrypt.text.value = Parse64(document.forms.decrypt.text64.value); return false" value="calc">
+
+</form>
+
+</body>
+</html>
+
+<p>
